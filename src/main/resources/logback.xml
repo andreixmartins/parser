@@ -12,7 +12,7 @@
 	</appender>
 
 	<appender name="FileLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${LOG_PATH}/integritas-cart.log</file>
+		<file>${LOG_PATH}/parser.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>${LOG_PATH}/parser.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
 			<maxHistory>${MAX_HISTORY_DAYS}</maxHistory>
@@ -23,7 +23,7 @@
 		</encoder>
 	</appender>
 
-	<logger name="com.ef.parser.service" level="INFO" />
+	<logger name="com.ef.parser" level="INFO" />
 
 	<root level="ERROR">
 		<appender-ref ref="STDOUT" />
