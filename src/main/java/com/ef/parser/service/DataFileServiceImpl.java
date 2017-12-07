@@ -154,7 +154,7 @@ public class DataFileServiceImpl implements DataFileService {
 		final String message = String.format("IP makes more than %s requests at %s - %s.", threshold, startDate, endDate);
 
 		if (!logsIp.isEmpty()) {
-			logger.info("IP found:");
+			logger.info("IP found with threshold greate than {}:", threshold);
 		}
 
 		logsIp.forEach(l -> {
