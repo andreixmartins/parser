@@ -1,7 +1,5 @@
 package com.ef.parser.runner;
 
-import java.io.File;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -20,13 +18,13 @@ public class DataLoaderRunner implements ApplicationRunner {
 	@Value("${startDate}")
 	private String startDate;
 
-	@Value("${duration}")
+	@Value("${duration:hourly}")
 	private String duration;
 
 	@Value("${threshold}")
 	private int threshold;
 
-	@Value("${accesslog}")
+	@Value("${accesslog:#{null}}")
 	private String accesslog;
 
 	@Autowired
@@ -34,12 +32,7 @@ public class DataLoaderRunner implements ApplicationRunner {
 
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
-
-		final File logFile = new File(accesslog);
-
-		final InputArgumentsDTO dto = new InputArgumentsDTO(startDate, Duration.valueOf(duration), threshold, logFile);
-		dataFileService.importData(dto);
-
+		final InputArgumentsDTO dto = new InputArgumentsDTO(startDate, Duration.valueOf(duration), threshold, accesslog);
+		dataFileService.execute(dto);
 	}
-
 }

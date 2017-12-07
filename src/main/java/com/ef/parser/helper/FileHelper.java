@@ -19,9 +19,13 @@ public class FileHelper {
 
 	public static final String QUOTE = "\"";
 
+	public static final String DATE_SIMPLE_PATTERN = "yyyy-MM-dd.HH:mm:ss";
+
 	public static final String DATE_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
 
-	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN, Locale.US);
+	public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN, Locale.getDefault());
+
+	public static final DateTimeFormatter DATE_SIMPLE_FORMATTER = DateTimeFormatter.ofPattern(DATE_SIMPLE_PATTERN, Locale.getDefault());
 
 	private static final String BREAK_LINE = "\r\n";
 

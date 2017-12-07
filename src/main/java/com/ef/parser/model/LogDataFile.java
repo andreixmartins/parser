@@ -8,7 +8,7 @@ public class LogDataFile {
 
 	private Timestamp startDate;
 
-	private long ip;
+	private String ip;
 
 	private String request;
 
@@ -16,7 +16,7 @@ public class LogDataFile {
 
 	private String userAgent;
 
-	public LogDataFile(Timestamp startDate, long ip, String request, int status, String userAgent) {
+	public LogDataFile(Timestamp startDate, String ip, String request, int status, String userAgent) {
 		this.startDate = startDate;
 		this.ip = ip;
 		this.request = request;
@@ -64,11 +64,11 @@ public class LogDataFile {
 		this.userAgent = userAgent;
 	}
 
-	public long getIp() {
+	public String getIp() {
 		return ip;
 	}
 
-	public void setIp(long ip) {
+	public void setIp(String ip) {
 		this.ip = ip;
 	}
 

@@ -1,7 +1,5 @@
 package com.ef.parser.dto;
 
-import java.io.File;
-
 import com.ef.parser.constant.Duration;
 
 public class InputArgumentsDTO {
@@ -12,9 +10,9 @@ public class InputArgumentsDTO {
 
 	private int threshold;
 
-	private File accesslog;
+	private String accesslog;
 
-	public InputArgumentsDTO(String startDate, Duration duration, int threshold, File accesslog) {
+	public InputArgumentsDTO(String startDate, Duration duration, int threshold, String accesslog) {
 		super();
 		this.startDate = startDate;
 		this.duration = duration;
@@ -28,14 +26,6 @@ public class InputArgumentsDTO {
 
 	public void setDuration(Duration duration) {
 		this.duration = duration;
-	}
-
-	public File getAccesslog() {
-		return accesslog;
-	}
-
-	public void setAccesslog(File accesslog) {
-		this.accesslog = accesslog;
 	}
 
 	public int getThreshold() {
@@ -54,4 +44,11 @@ public class InputArgumentsDTO {
 		this.startDate = startDate;
 	}
 
+	public String getAccesslog() {
+		return accesslog;
+	}
+
+	public void setAccesslog(String accesslog) {
+		this.accesslog = accesslog;
+	}
 }
