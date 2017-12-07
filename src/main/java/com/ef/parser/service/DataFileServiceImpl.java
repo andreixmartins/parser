@@ -46,17 +46,22 @@ public class DataFileServiceImpl implements DataFileService {
 	@Override
 	public void execute(final InputArgumentsDTO dto) {
 
-		if (dto.getAccesslog() != null) {
-			try {
+		try {
+			if (dto.getAccesslog() != null) {
 				load(dto);
-			} catch (IOException e) {
-				logger.error("Errors occured on load data file {}", dto.getAccesslog());
 			}
+		} catch (IOException e) {
+			logger.error("Errors occured on load data file {}", dto.getAccesslog());
+		} finally {
+			find(dto);
 		}
-
-		find(dto);
 	}
 
+	/**
+	 * Using the parameters checks if a given IP makes more than a certain number of requests.
+	 * 
+	 * @param dto
+	 */
 	public void find(final InputArgumentsDTO dto) {
 
 		if (dto.getStartDate() == null) {
@@ -79,20 +84,19 @@ public class DataFileServiceImpl implements DataFileService {
 		logIPInfo(blockedIps, dto.getDuration(), dto.getThreshold(), startDate, endDate);
 	}
 
-	private void logIPInfo(List<LogIP> blockedIps, Duration duration, int threshold, LocalDateTime startDate, LocalDateTime endDate) {
-		final String message = "IP %s makes more than %s requests at %s - %s.";
-		blockedIps.forEach(l -> {
-			logger.info(String.format(message, l.getIp(), threshold, startDate, endDate));
-		});
-	}
-
+	/**
+	 * Load log data file to MySQL database
+	 * 
+	 * @param dto
+	 * @throws IOException
+	 */
 	private void load(final InputArgumentsDTO dto) throws IOException {
 
 		if (dto.getAccesslog() == null) {
 			throw new ParserException("Accesslog param is required.");
 		}
 
-		final File accesslog = new File(dto.getAccesslog());
+		final File accesslog = getFile(dto.getAccesslog());
 
 		logger.info("Loading file {} to database", accesslog.getName());
 
@@ -124,17 +128,37 @@ public class DataFileServiceImpl implements DataFileService {
 	};
 
 	private LogDataFile buildLogDataFile(final String[] data) {
-
-		if (data.length != 5) {
-			logger.warn("Invalid data");
+		if (data.length != FileHelper.DEFAULT_COLUMN_LENGTH) {
+			throw new ParserException("File contains invalid data.");
 		}
+		return new LogDataFile(getStartDate(data[0]), getString(data[1]), getString(data[2]), getStatus(data[3]), getString(data[4]));
+	}
 
-		return new LogDataFile(
-				getStartDate(data[0]),
-				getString(data[1]),
-				getString(data[2]),
-				getStatus(data[3]),
-				getString(data[4]));
+	private File getFile(final String file) {
+		final File accesslog = new File(file);
+		if (!accesslog.exists()) {
+			throw new ParserException(String.format("File %s doesn't exist.", file));
+		}
+		return accesslog;
+	}
+
+	/**
+	 * Print values on console and saves the blocked ip.
+	 * 
+	 * @param logsIp
+	 * @param duration
+	 * @param threshold
+	 * @param startDate
+	 * @param endDate
+	 */
+	private void logIPInfo(List<LogIP> logsIp, Duration duration, int threshold, LocalDateTime startDate, LocalDateTime endDate) {
+		final String message = String.format("IP makes more than %s requests at %s - %s.", threshold, startDate, endDate);
+		logsIp.forEach(l -> {
+			l.setMessage(message);
+			logger.info(l.getIp());
+		});
+
+		logIPRepository.save(logsIp);
 	}
 
 	private Timestamp getStartDate(final String value) {

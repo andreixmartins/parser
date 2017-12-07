@@ -1,4 +1,4 @@
-package com.ef.parser;
+package com.ef;
 
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;

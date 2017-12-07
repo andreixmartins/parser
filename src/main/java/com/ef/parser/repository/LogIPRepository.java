@@ -1,10 +1,12 @@
 package com.ef.parser.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +34,20 @@ public class LogIPRepository extends JdbcRepository {
 			}
 		};
 	}
+
+	public int[] save(final List<LogIP> logsIp) {
+		return this.jdbcTemplate.batchUpdate("insert into logIp (ip, message) values (INET_ATON(?), ?)",
+				new BatchPreparedStatementSetter() {
+					public void setValues(PreparedStatement ps, int i) throws SQLException {
+						final LogIP data = logsIp.get(i);
+						ps.setString(1, data.getIp());
+						ps.setString(2, data.getMessage());
+					}
+
+					public int getBatchSize() {
+						return logsIp.size();
+					}
+				});
+	}
+
 }

@@ -15,8 +15,6 @@ import com.ef.parser.model.LogFile;
 public class LogFileRepository extends JdbcRepository {
 
 	public void save(final LogFile logFile) {
-		// jdbcTemplate.update("insert into logFile (startDate, name) values (?, ?)", logFile.getStartDate(), logFile.getName());
-
 		final GeneratedKeyHolder holder = new GeneratedKeyHolder();
 		jdbcTemplate.update(new PreparedStatementCreator() {
 			@Override

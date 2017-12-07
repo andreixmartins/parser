@@ -13,7 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FileHelper {
+
+	private static final Logger logger = LoggerFactory.getLogger(FileHelper.class);
+
+	public static final int DEFAULT_COLUMN_LENGTH = 5;
 
 	public static final String DOT = "\\.";
 
@@ -34,6 +41,8 @@ public class FileHelper {
 	private static final int MAX_SPLITS = 10;
 
 	public List<Path> split(final File file) {
+
+		logger.info("Split file {}", file.getName());
 
 		final List<Path> files = new ArrayList<Path>();
 
@@ -62,9 +71,9 @@ public class FileHelper {
 			}
 
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			logger.error("File not found", e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Occured errors on load file", e);
 		}
 
 		return files;

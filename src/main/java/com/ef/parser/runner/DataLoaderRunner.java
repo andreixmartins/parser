@@ -21,7 +21,7 @@ public class DataLoaderRunner implements ApplicationRunner {
 	@Value("${duration:hourly}")
 	private String duration;
 
-	@Value("${threshold}")
+	@Value("${threshold:0}")
 	private int threshold;
 
 	@Value("${accesslog:#{null}}")
