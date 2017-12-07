@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Parser {
 
 	public static void main(String[] args) {
-		SpringApplication app = new SpringApplication(Parser.class);
+		final SpringApplication app = new SpringApplication(Parser.class);
 		app.setBannerMode(Banner.Mode.OFF);
 		app.run(args);
 	}

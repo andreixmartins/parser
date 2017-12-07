@@ -50,10 +50,9 @@ public class DataFileServiceImpl implements DataFileService {
 			if (dto.getAccesslog() != null) {
 				load(dto);
 			}
-		} catch (IOException e) {
-			logger.error("Errors occured on load data file {}", dto.getAccesslog());
-		} finally {
 			find(dto);
+		} catch (ParserException e) {
+			logger.error("Errors occured on load data file {} - Message: {}", dto.getAccesslog(), e.getMessage());
 		}
 	}
 
@@ -90,7 +89,7 @@ public class DataFileServiceImpl implements DataFileService {
 	 * @param dto
 	 * @throws IOException
 	 */
-	private void load(final InputArgumentsDTO dto) throws IOException {
+	private void load(final InputArgumentsDTO dto) {
 
 		if (dto.getAccesslog() == null) {
 			throw new ParserException("Accesslog param is required.");
@@ -153,6 +152,11 @@ public class DataFileServiceImpl implements DataFileService {
 	 */
 	private void logIPInfo(List<LogIP> logsIp, Duration duration, int threshold, LocalDateTime startDate, LocalDateTime endDate) {
 		final String message = String.format("IP makes more than %s requests at %s - %s.", threshold, startDate, endDate);
+
+		if (!logsIp.isEmpty()) {
+			logger.info("IP found:");
+		}
+
 		logsIp.forEach(l -> {
 			l.setMessage(message);
 			logger.info(l.getIp());
