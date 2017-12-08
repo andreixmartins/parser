@@ -84,6 +84,12 @@ public class FileLogDataLoad extends FileDataLoad implements DataLoad {
 	private void validade(final InputArgumentsDTO dto) {
 
 		final File accesslog = new File(dto.getAccesslog());
+		LogFile logFile = logFileRepository.findByName(accesslog.getName());
+
+		if (logFile != null) {
+			throw new ParserException(String.format("File %s already imported.", dto.getAccesslog()));
+		}
+
 		if (!accesslog.exists()) {
 			throw new ParserException(String.format("File %s doesn't exist.", dto.getAccesslog()));
 		}
