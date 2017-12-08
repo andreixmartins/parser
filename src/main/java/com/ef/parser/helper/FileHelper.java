@@ -34,7 +34,7 @@ public class FileHelper {
 
 	public static final DateTimeFormatter DATE_SIMPLE_FORMATTER = DateTimeFormatter.ofPattern(DATE_SIMPLE_PATTERN, Locale.getDefault());
 
-	private static final String BREAK_LINE = "\r\n";
+	public static final String BREAK_LINE = "\r\n";
 
 	public static final String PIPE = "\\|";
 

@@ -1,6 +1,5 @@
 package com.ef.parser;
 
-import java.io.File;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -84,13 +83,6 @@ public class FindWebSystemLog implements SystemLog {
 
 		if (dto.getDuration() == null) {
 			throw new ParserException("Duration param is required.");
-		}
-
-		if (dto.getAccesslog() != null) {
-			final File accesslog = new File(dto.getAccesslog());
-			if (!accesslog.exists()) {
-				throw new ParserException(String.format("File %s doesn't exist.", dto.getAccesslog()));
-			}
 		}
 	}
 }
